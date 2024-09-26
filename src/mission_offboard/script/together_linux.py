@@ -81,7 +81,7 @@ upper_pink = np.array([360, 255, 255])  # 保持色调上限
 # upper_blue2 = np.array([120, 100, 100])
 
 # 定义较严格的蓝色HSV阈值
-lower_blue_dark = np.array([100, 230, 100])  # 设置饱和度的下限，以排除带有蓝色的白色区域
+lower_blue_dark = np.array([100, 150, 100])  # 设置饱和度的下限，以排除带有蓝色的白色区域
 upper_blue_dark = np.array([140, 255, 255])  # 不包括那些可能带有蓝色的黑色区域
 
 # 定义较严格的蓝色HSV阈值
@@ -115,8 +115,8 @@ classes_names = {0: '00', 1: '01', 2: '02', 3: '03', 4: '04', 5: '05', 6: '06', 
                  91: '91', 92: '92', 93: '93', 94: '94', 95: '95', 96: '96', 97: '97', 98: '98', 99: '99'}
 # ----------------------------------------------------------------------
 # 设置yolo识别的参数，设置为全局变量易于更改
-maxdet = 5
-max_num = 5
+maxdet = 3
+max_num = 3
 # ----------------------------------------------------------------------
 # 加载YOLO权重(pt)文件
 MODELOBB = "/home/amov/catkin_ws/src/mission_offboard/script/models/yolo_obb_red_blue.pt"
@@ -336,7 +336,7 @@ def coordinate_change1(height=25, pos_=[0, 0, 25], yaw=0.00000000, cropTensorLis
     y_ = x * np.sin(yaw - pi / 2) + y * np.cos(yaw - pi / 2)
 
     current_speed = math.pow(speed[0] * speed[0] + speed[1] * speed[1], 0.5)
-    delt = current_speed * 0.83333333#12.5# current_speed * 1.08288
+    delt = current_speed * 1.15#12.5# current_speed * 1.08288
     with open(f'/home/amov/Desktop/well{folder_name}/output1.txt', 'a') as file:
         file.write("yaw is: " + str(yaw) + " ")
         file.write("pose is: " + str(pos_[0]) + " " + str(pos_[1]) + " " + str(pos_[2]) + " ")
@@ -371,7 +371,7 @@ def coordinate_change2(height=25, pos_=[0, 0, 25], yaw=0.00000000, cropTensorLis
     y_ = x * np.sin(yaw - pi / 2) + y * np.cos(yaw - pi / 2)
 
     current_speed = math.pow(speed[0] * speed[0] + speed[1] * speed[1], 0.5)
-    delt = current_speed * 0.83333333 # 12.5# current_speed * 1.08288
+    delt = current_speed * 1.15 # 12.5# current_speed * 1.08288
     with open(f'/home/amov/Desktop/well{folder_name}/output2.txt', 'a') as file:
         file.write("yaw is: " + str(yaw) + " ")
         file.write("pose is: " + str(pos_[0]) + " " + str(pos_[1]) + " " + str(pos_[2]) + " ")
@@ -406,7 +406,7 @@ def coordinate_change3(height=25, pos_=[0, 0, 25], yaw=0.00000000, cropTensorLis
     y_ = x * np.sin(yaw - pi / 2) + y * np.cos(yaw - pi / 2)
 
     current_speed = math.pow(speed[0] * speed[0] + speed[1] * speed[1], 0.5)
-    delt = current_speed * 0.83333333#12.5# current_speed * 1.08288
+    delt = current_speed * 1.15#12.5# current_speed * 1.08288
     with open(f'/home/amov/Desktop/well{folder_name}/output3.txt', 'a') as file:
         file.write("yaw is: " + str(yaw) + " ")
         file.write("pose is: " + str(pos_[0]) + " " + str(pos_[1]) + " " + str(pos_[2]) + " ")
@@ -516,9 +516,22 @@ if __name__ == "__main__":
             # print("frame is read")
             end_time = time.time()
             if success == True:
-                if end_time - start_time > 180:
-                    print("code exit by time")
-                    break
+                # 获取视频帧的高度和宽度
+
+                height, width = frame.shape[:2]
+
+
+
+    # 在下半部分绘制黑色矩形
+
+    # 起始点是 (0, height//2)，结束点是 (width, height)
+
+                cv2.rectangle(frame, (0, height // 2), (width, height), (0, 0, 0), -1)
+
+
+                # if end_time - start_time > 180:
+                #     print("code exit by time")
+                #     break
                 if wp == 5:
                     print("code exit by point")
                     break
